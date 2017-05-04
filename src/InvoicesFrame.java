@@ -1,0 +1,130 @@
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/**
+ * Created by alima on 4/5/17.
+ */
+public class InvoicesFrame extends JInternalFrame
+implements ActionListener{
+
+    final ImageIcon searchIcon = new ImageIcon("ext-lib/searchIcon.png");
+    JTable tblInvoices;
+    Statement st;
+    JTextField txtStockSearch;
+    JLabel lblTotalValue;
+
+    public InvoicesFrame(Statement st){
+        this.st = st;
+        title = "Invoices";
+        setBounds(586, 198, 725, 512);
+
+        setFrameIcon(searchIcon);
+        setClosable(true);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setBackground(new Color(35, 44, 49));
+
+        //setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(null);
+
+        JPanel searchPanel = new JPanel();
+        searchPanel.setSize(725, 45);
+
+        JLabel lblSearch = new JLabel("Search:");
+        lblSearch.setFont(new Font("Arial", Font.BOLD, 12));
+        lblSearch.setForeground(new Color(102, 147, 182));
+
+        txtStockSearch = new JTextField();
+        txtStockSearch.addActionListener(this);
+        txtStockSearch.setForeground(Color.WHITE);
+        txtStockSearch.setBackground(Color.DARK_GRAY);
+        txtStockSearch.setColumns(30);
+
+        JButton btnSearch = new JButton("Search");
+        btnSearch.addActionListener(this);
+
+        searchPanel.add(lblSearch);
+        searchPanel.add(txtStockSearch);
+        searchPanel.add(btnSearch);
+
+        tblInvoices = new JTable();
+
+        String[] columnNames = {
+                "Number",
+                "Date",
+                "Customer Name",
+                "Amount"
+        };
+
+        tblInvoices.setForeground(Color.WHITE);
+        tblInvoices.setBackground(Color.DARK_GRAY);
+        tblInvoices.setModel(new DefaultTableModel(null, columnNames){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
+
+        JScrollPane scrollPane = new JScrollPane(tblInvoices);
+        scrollPane.setBounds(10, 50, 689, 191);
+        tblInvoices.setFillsViewportHeight(true);
+
+        JPanel footerPanel = new JPanel();
+        footerPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
+
+        JLabel lblTotal = new JLabel("Total:");
+        lblTotal.setFont(new Font("Arial", Font.BOLD, 14));
+        lblTotal.setForeground(new Color(102, 147, 182));
+
+        lblTotalValue = new JLabel("0.00");
+        lblTotal.setFont(new Font("Arial", Font.PLAIN, 14));
+        lblTotal.setForeground(new Color(102, 147, 182));
+
+        footerPanel.add(lblTotal);
+        footerPanel.add(lblTotalValue);
+
+        footerPanel.setBounds(0, 260, 700, 45);
+
+        this.add(scrollPane);
+        this.add(searchPanel);
+        this.add(footerPanel);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try{
+            String search = txtStockSearch.getText();
+            ResultSet rs = (ResultSet) st.executeQuery("SELECT * FROM lpa_invoices WHERE " +
+                                                    "lpa_inv_client_name LIKE '%" + search + "%'");
+
+            if(rs.next()){
+                double totalAmount = 0;
+                DefaultTableModel model = (DefaultTableModel)tblInvoices.getModel();
+                model.getDataVector().removeAllElements();
+                model.fireTableDataChanged();
+                rs.beforeFirst();
+                while (rs.next()){
+                    Object[] row = {
+                            rs.getString("lpa_inv_no"),
+                            rs.getString("lpa_inv_date"),
+                            rs.getString("lpa_inv_client_name"),
+                            rs.getString("lpa_inv_amount")
+                    };
+                    model.addRow(row);
+
+                    totalAmount += Double.parseDouble(rs.getString("lpa_inv_amount"));
+                }
+                lblTotalValue.setText("$ " + totalAmount);
+            }
+
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+    }
+}

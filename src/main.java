@@ -51,6 +51,7 @@ public class main extends JFrame {
     public JLabel lblDisplayName;
     public JTextField txtStockSearch,txtStockID,txtStockName,txtStockDes,
             txtStockOnHand,txtStockPrice;
+    public ButtonGroup bgpStockStatus;
     public String saveMode;
     /**
      * Launch the application.
@@ -75,6 +76,7 @@ public class main extends JFrame {
      */
     public main() {
         setTitle("LPA - Administration System v1.0");
+        openDB();
         mainIcon = new ImageIcon("ext-lib/LPALogo.png");
         setIconImage(mainIcon.getImage());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -277,6 +279,7 @@ public class main extends JFrame {
 		tblSearchStock.getTableHeader().getColumnModel().getColumn(3).setHeaderRenderer(rightRenderer);
 		*/
 
+
         ifStock = new JInternalFrame("LPA - Stock Record");
         ifStock.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         ifStock.setClosable(true);
@@ -297,7 +300,7 @@ public class main extends JFrame {
         txtStockID.setBounds(100, 9, 203, 20);
         ifStock.getContentPane().add(txtStockID);
         txtStockID.setColumns(10);
-        txtStockID.setEditable(false);
+//        txtStockID.setEditable(false);
 
         JLabel lblStockName = new JLabel("Stock Name:");
         lblStockName.setForeground(Color.WHITE);
@@ -351,6 +354,14 @@ public class main extends JFrame {
         lblStockPrice.setBounds(10, 135, 80, 14);
         ifStock.getContentPane().add(lblStockPrice);
 
+        JLabel lblStockStatus = new JLabel("Status:");
+        lblStockStatus.setForeground(Color.WHITE);
+        lblStockStatus.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblStockStatus.setBounds(10, 155, 80, 14);
+        ifStock.getContentPane().add(lblStockStatus);
+
+        bgpStockStatus = FormControls.addStockStatusGroup(ifStock.getContentPane());
+
         JButton btnStockSave = new JButton("Save");
         btnStockSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -365,9 +376,10 @@ public class main extends JFrame {
         ifStock.getContentPane().add(separator_1);
         ifStock.setVisible(false);
 
-        ifSales = new JInternalFrame("Sales");
-        ifSales.setClosable(true);
-        ifSales.setBounds(47, 354, 295, 148);
+        //ifSales = new JInternalFrame("Sales");
+        ifSales = new InvoicesFrame(st);
+        //ifSales.setClosable(true);
+        //ifSales.setBounds(47, 354, 295, 148);
         contentPane.add(ifSales);
 
 
@@ -428,14 +440,15 @@ public class main extends JFrame {
                     final int row = target.getSelectedRow();
                     final int column = target.getSelectedColumn();
                     String val = target.getValueAt(row, 0).toString();
+                    saveMode = "update";
                     getStockData(val);
                 }
             }
         });
-        tblSearchStock.getColumnModel().getColumn(1).setPreferredWidth(300);
+        tblSearchStock.getColumnModel().getColumn(1).setPreferredWidth(250);
         tblSearchStock.getColumnModel().getColumn(2).setPreferredWidth(150);
-        tblSearchStock.getColumnModel().getColumn(3).setPreferredWidth(30);
-        tblSearchStock.getColumnModel().getColumn(4).setPreferredWidth(50);
+        tblSearchStock.getColumnModel().getColumn(3).setPreferredWidth(50);
+        tblSearchStock.getColumnModel().getColumn(4).setPreferredWidth(70);
         tblSearchStock.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
         tblSearchStock.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
 
@@ -458,6 +471,10 @@ public class main extends JFrame {
             public void actionPerformed(ActionEvent arg0) {
                 txtStockID.setText("");
                 txtStockName.setText("");
+                txtStockDes.setText("");
+                txtStockOnHand.setText("0");
+                txtStockPrice.setText("0");
+                saveMode = "new";
                 centerJIF(ifStock,"app");
             }
         });
@@ -482,7 +499,7 @@ public class main extends JFrame {
         ifSales.setVisible(false);
         lpa_menuBar.setVisible(false);
         ifLogin.setVisible(true);
-        openDB();
+
     }
 
     public void centerJIF(JInternalFrame jif,String parent) {
@@ -592,6 +609,8 @@ public class main extends JFrame {
                 txtStockOnHand.setText(rs.getString("lpa_stock_onhand"));
                 txtStockPrice.setText(rs.getString("lpa_stock_price"));
 
+                FormControls.setButtonGroup(rs.getString("lpa_stock_status"), bgpStockStatus.getElements());
+
                 Dimension ifS = ifSearchStock.getSize();
                 Point IFSS = ifSearchStock.getLocation();
                 int ifsX = (int) IFSS.getX();
@@ -608,8 +627,14 @@ public class main extends JFrame {
             if(saveMode == "new") {
                 st.executeUpdate(
                         "INSERT INTO lpa_stock " +
-                                "(lpa_stock_ID,lpa_stock_name,lpa_stock_desc) " +
-                                "VALUES ('"+txtStockID.getText()+"',)"
+                                "(lpa_stock_ID,lpa_stock_name,lpa_stock_desc, lpa_stock_onhand, lpa_stock_price, lpa_stock_status) " +
+                                "VALUES (" +
+                                "'" + txtStockID.getText() + "'," +
+                                "'" + txtStockName.getText() + "'," +
+                                "'" + txtStockDes.getText() + "'," +
+                                "'" + txtStockOnHand.getText() + "'," +
+                                "'" + txtStockPrice.getText() + "'," +
+                                "'" + bgpStockStatus.getSelection().getActionCommand() + "')"
                 );
             } else {
                 st.executeUpdate(
@@ -618,7 +643,8 @@ public class main extends JFrame {
                                 "lpa_stock_name = '" + txtStockName.getText() + "'," +
                                 "lpa_stock_desc = '" + txtStockDes.getText() + "'," +
                                 "lpa_stock_onhand = '" + txtStockOnHand.getText() + "'," +
-                                "lpa_stock_price = '" + txtStockPrice.getText() + "' " +
+                                "lpa_stock_price = '" + txtStockPrice.getText() + "', " +
+                                "lpa_stock_status = '" + bgpStockStatus.getSelection().getActionCommand() + "' " +
                                 "WHERE lpa_stock_ID = '"+StockID+"' LIMIT 1;"
                 );
             }
