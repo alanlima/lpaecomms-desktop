@@ -15,7 +15,7 @@ implements ActionListener{
     final ImageIcon searchIcon = new ImageIcon("ext-lib/searchIcon.png");
     JTable tblInvoices;
     private final ConnectionManager connManager = ConnectionManager.instance();
-    JTextField txtStockSearch;
+    JTextField txtSearch;
     JLabel lblTotalValue;
 
     public InvoicesFrame(){
@@ -37,17 +37,17 @@ implements ActionListener{
         lblSearch.setFont(new Font("Arial", Font.BOLD, 12));
         lblSearch.setForeground(new Color(102, 147, 182));
 
-        txtStockSearch = new JTextField();
-        txtStockSearch.addActionListener(this);
-        txtStockSearch.setForeground(Color.WHITE);
-        txtStockSearch.setBackground(Color.DARK_GRAY);
-        txtStockSearch.setColumns(30);
+        txtSearch = new JTextField();
+        txtSearch.addActionListener(this);
+        txtSearch.setForeground(Color.WHITE);
+        txtSearch.setBackground(Color.DARK_GRAY);
+        txtSearch.setColumns(30);
 
         JButton btnSearch = new JButton("Search");
         btnSearch.addActionListener(this);
 
         searchPanel.add(lblSearch);
-        searchPanel.add(txtStockSearch);
+        searchPanel.add(txtSearch);
         searchPanel.add(btnSearch);
 
         tblInvoices = new JTable();
@@ -97,7 +97,7 @@ implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         ResultSet rs = null;
         try{
-            String search = txtStockSearch.getText();
+            String search = txtSearch.getText();
             rs = connManager.executeQuery("SELECT * FROM lpa_invoices WHERE " +
                                                     "lpa_inv_client_name LIKE '%" + search + "%'");
 

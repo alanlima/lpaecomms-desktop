@@ -30,7 +30,7 @@ public class main extends JFrame {
     private JSeparator mnMenuSep_1, mnMenuSep_2;
     private Dimension screenDims = Toolkit.getDefaultToolkit().getScreenSize();
     private JMenuBar lpa_menuBar;
-    private JInternalFrame ifLogin, ifSearchStock, ifStock, ifSales;
+    private JInternalFrame ifLogin, ifSearchStock, ifStock, ifSales, ifUserManagement;
     private JLayeredPane layeredPaneBG, layeredPaneFG;
     private JScrollPane searchScrollPaneStock;
     private JTable tblSearchStock;
@@ -112,6 +112,7 @@ public class main extends JFrame {
         lpa_mnMenu.add(lpa_mnSystemAdmin);
 
         JMenuItem lpa_mntmUserMan = new JMenuItem("User Management");
+        lpa_mntmUserMan.addActionListener(e -> ifUserManagement.setVisible(true));
         usersIcon = new ImageIcon("ext-lib/usersIcon.png");
         lpa_mntmUserMan.setIcon(usersIcon);
         lpa_mnSystemAdmin.add(lpa_mntmUserMan);
@@ -338,6 +339,10 @@ public class main extends JFrame {
         //ifSales.setClosable(true);
         //ifSales.setBounds(47, 354, 295, 148);
         contentPane.add(ifSales);
+
+        ifUserManagement = new UserManagementFrame();
+        ifUserManagement.setBounds(586, 198, 725, 512);
+        contentPane.add(ifUserManagement);
 
         lblDisplayName = new JLabel(displayName);
         lblDisplayName.setBounds(5, 5, 500, 14);
