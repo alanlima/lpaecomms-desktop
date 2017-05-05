@@ -11,6 +11,9 @@ import java.sql.Statement;
  * Created by alima on 5/5/17.
  */
 public class ConnectionManager {
+
+    private static final ConnectionManager _instance = new ConnectionManager();
+
     /**
      * Declaring constants variables
      * */
@@ -35,7 +38,7 @@ public class ConnectionManager {
     public ResultSet executeQuery(String sql) throws Exception {
         try{
             Statement st = conn.createStatement();
-            st.closeOnCompletion();
+            //st.closeOnCompletion();
             return st.executeQuery(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,5 +54,19 @@ public class ConnectionManager {
             e.printStackTrace();
             throw new Exception("Error on execute the query.", e);
         }
+    }
+
+    public void closeResultSet(ResultSet rs){
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+    }
+
+    public static ConnectionManager instance(){
+        return _instance;
     }
 }

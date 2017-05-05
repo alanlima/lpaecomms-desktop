@@ -1,27 +1,24 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
- * Created by alima on 4/5/17.
+ * Created by alima on 4git/5/17.
  */
+@SuppressWarnings("WeakerAccess")
 public class InvoicesFrame extends JInternalFrame
 implements ActionListener{
 
     final ImageIcon searchIcon = new ImageIcon("ext-lib/searchIcon.png");
     JTable tblInvoices;
-    Statement st;
+    private final ConnectionManager connManager = ConnectionManager.instance();
     JTextField txtStockSearch;
     JLabel lblTotalValue;
 
-    public InvoicesFrame(Statement st){
-        this.st = st;
+    public InvoicesFrame(){
         title = "Invoices";
         setBounds(586, 198, 725, 512);
 
@@ -98,9 +95,10 @@ implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        ResultSet rs = null;
         try{
             String search = txtStockSearch.getText();
-            ResultSet rs = (ResultSet) st.executeQuery("SELECT * FROM lpa_invoices WHERE " +
+            rs = connManager.executeQuery("SELECT * FROM lpa_invoices WHERE " +
                                                     "lpa_inv_client_name LIKE '%" + search + "%'");
 
             if(rs.next()){
@@ -123,8 +121,10 @@ implements ActionListener{
                 lblTotalValue.setText("$ " + totalAmount);
             }
 
-        } catch (SQLException e1) {
+        } catch (Exception e1) {
             e1.printStackTrace();
+        }finally {
+            connManager.closeResultSet(rs);
         }
     }
 }
