@@ -12,6 +12,8 @@ public class UserManagementFrame extends JInternalFrame {
     private GridBagConstraints layoutConstraints;
     private GridBagLayout layout;
     private ConnectionManager connManager = ConnectionManager.instance();
+    private UserManagementEditFrame userEditFrame;
+
 
     /**
      * Components Variables
@@ -24,6 +26,9 @@ public class UserManagementFrame extends JInternalFrame {
         this.layout = new GridBagLayout();
         this.layoutConstraints = new GridBagConstraints();
         this.layoutConstraints.insets = new Insets(10, 15, 6, 15);
+        this.userEditFrame = new UserManagementEditFrame();
+        this.userEditFrame.setBounds(600, 170, 700, 350);
+
         setLayout(this.layout);
         setClosable(true);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -32,6 +37,8 @@ public class UserManagementFrame extends JInternalFrame {
         initComponents();
 
         search();
+
+        main.contentPane.add(this.userEditFrame);
     }
 
     private void search() {
@@ -68,7 +75,7 @@ public class UserManagementFrame extends JInternalFrame {
     }
 
     private void edit(String userId){
-
+        this.userEditFrame.setVisible(true);
     }
 
     private void initComponents() {
@@ -76,6 +83,7 @@ public class UserManagementFrame extends JInternalFrame {
         lblSearch.setFont(new Font("Arial", Font.BOLD, 12));
         lblSearch.setForeground(new Color(102, 147, 182));
         layoutConstraints.fill = GridBagConstraints.BOTH;
+        layoutConstraints.anchor = GridBagConstraints.CENTER;
         addComponent(lblSearch, 0, 0);
 
         txtSearch = new JTextField();
@@ -133,6 +141,7 @@ public class UserManagementFrame extends JInternalFrame {
         btnNewUser.addActionListener(e -> newUser());
         layoutConstraints.weightx = 1;
         layoutConstraints.weighty = 0;
+        layoutConstraints.anchor = GridBagConstraints.EAST;
         addComponent(btnNewUser, 2, 2);
     }
 

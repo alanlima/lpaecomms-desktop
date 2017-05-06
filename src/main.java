@@ -22,7 +22,7 @@ public class main extends JFrame {
      * Declaring global variables
      */
     private String displayName = "";
-    private JDesktopPane contentPane;
+    public static JDesktopPane contentPane;
     private ImageIcon mainIcon, stockIcon, salesIcon, invoiceIcon, clientIcon,
             adminIcon, exitIcon, usersIcon, helpIcon, aboutIcon, secIcon,
             keysIcon, loginBGIcon, searchIcon;
