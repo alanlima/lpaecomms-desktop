@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -8,12 +10,11 @@ import java.sql.ResultSet;
 /**
  * Created by alima on 5/5/17.
  */
-public class UserManagementFrame extends JInternalFrame {
+public class UserManagementFrame extends CustomInternalFrame {
     private GridBagConstraints layoutConstraints;
     private GridBagLayout layout;
     private ConnectionManager connManager = ConnectionManager.instance();
     private UserManagementEditFrame userEditFrame;
-
 
     /**
      * Components Variables
@@ -22,7 +23,7 @@ public class UserManagementFrame extends JInternalFrame {
     JTable tblUsers;
 
     public UserManagementFrame() {
-        super("User Management");
+        setTitle("User Management");
         this.layout = new GridBagLayout();
         this.layoutConstraints = new GridBagConstraints();
         this.layoutConstraints.insets = new Insets(10, 15, 6, 15);
@@ -39,7 +40,9 @@ public class UserManagementFrame extends JInternalFrame {
         search();
 
         main.contentPane.add(this.userEditFrame);
+        this.userEditFrame.addUserEditFrameListener(this::search);
     }
+
 
     private void search() {
         ResultSet rs = null;
@@ -72,9 +75,12 @@ public class UserManagementFrame extends JInternalFrame {
     }
 
     private void newUser() {
+        this.userEditFrame.putExtra(UserManagementEditFrame.EXTRA_USER_ID, null);
+        this.userEditFrame.setVisible(true);
     }
 
     private void edit(String userId){
+        this.userEditFrame.putExtra(UserManagementEditFrame.EXTRA_USER_ID, userId);
         this.userEditFrame.setVisible(true);
     }
 

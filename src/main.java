@@ -18,6 +18,9 @@ public class main extends JFrame {
 
     private static final ConnectionManager connManager = ConnectionManager.instance();
 
+    private static final String USER_STATUS_DISABLED = "0";
+    private static final String USER_GROUP_ADMIN = "administrator";
+
     /**
      * Declaring global variables
      */
@@ -475,6 +478,20 @@ public class main extends JFrame {
                             "' LIMIT 1;"
             );
             if (rs.next()) {
+                String group = rs.getString("lpa_user_group");
+                String status = rs.getString("lpa_user_status");
+
+                if(USER_STATUS_DISABLED.equals(status)){
+                    MSG_POPUP("User disabled.");
+                    return;
+                }
+
+                if(!USER_GROUP_ADMIN.equals(group)){
+                    MSG_POPUP("Access unauthorized.");
+                    return;
+                }
+
+
                 lpa_menuBar.setVisible(true);
                 txtUsername.setText("");
                 txtPassword.setText("");
