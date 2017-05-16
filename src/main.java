@@ -152,11 +152,19 @@ public class main extends JFrame {
         helpIcon = new ImageIcon("ext-lib/helpIcon.png");
         mntmHelpGuide.setIcon(helpIcon);
         lpa_mnHelp.add(mntmHelpGuide);
+        mntmHelpGuide.addActionListener(e -> {
+            UserGuideDialog dialog = new UserGuideDialog();
+            dialog.setVisible(true);
+        });
 
         JMenuItem mntmAboutLpa = new JMenuItem("About LPA");
         aboutIcon = new ImageIcon("ext-lib/aboutIcon.png");
         mntmAboutLpa.setIcon(aboutIcon);
         lpa_mnHelp.add(mntmAboutLpa);
+        mntmAboutLpa.addActionListener(e -> {
+            AboutDialog dialog = new AboutDialog();
+            dialog.setVisible(true);
+        });
 
         contentPane = new JDesktopPane() {
             protected void paintComponent(Graphics g) {
