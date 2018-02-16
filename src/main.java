@@ -68,7 +68,7 @@ public class main extends JFrame {
     private main() {
         setTitle("LPA - Administration System v1.0");
         connManager.connect();
-        mainIcon = new ImageIcon("ext-lib/LPALogo.png");
+        mainIcon = new ImageIcon(getClass().getResource("LPALogo.png"));
         setIconImage(mainIcon.getImage());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(100, 100, 971, 614);
@@ -82,7 +82,7 @@ public class main extends JFrame {
         lpa_menuBar.add(lpa_mnMenu);
 
         JMenuItem lpa_mntmStockControl = new JMenuItem("Stock Management");
-        stockIcon = new ImageIcon("ext-lib/stockIcon.png");
+        stockIcon = new ImageIcon(getClass().getResource("stockIcon.png"));
         lpa_mntmStockControl.setIcon(stockIcon);
         lpa_mntmStockControl.addActionListener(arg0 -> {
             //centerJIF(ifSearchStock,"app");
@@ -91,18 +91,18 @@ public class main extends JFrame {
         lpa_mnMenu.add(lpa_mntmStockControl);
 
         JMenu lpa_mnSalesInvoicing = new JMenu("Sales and Invoicing");
-        salesIcon = new ImageIcon("ext-lib/salesIcon.png");
+        salesIcon = new ImageIcon(getClass().getResource("salesIcon.png"));
         lpa_mnSalesInvoicing.setIcon(salesIcon);
         lpa_mnMenu.add(lpa_mnSalesInvoicing);
 
         JMenuItem lpa_mntmInvoices = new JMenuItem("Invoices");
         lpa_mntmInvoices.addActionListener(arg0 -> ifSales.setVisible(true));
-        invoiceIcon = new ImageIcon("ext-lib/invoiceIcon.png");
+        invoiceIcon = new ImageIcon(getClass().getResource("invoiceIcon.png"));
         lpa_mntmInvoices.setIcon(invoiceIcon);
         lpa_mnSalesInvoicing.add(lpa_mntmInvoices);
 
         JMenuItem lpa_mntmClients = new JMenuItem("Clients");
-        clientIcon = new ImageIcon("ext-lib/clientIcon.png");
+        clientIcon = new ImageIcon(getClass().getResource("clientIcon.png"));
         lpa_mntmClients.setIcon(clientIcon);
         lpa_mnSalesInvoicing.add(lpa_mntmClients);
 
@@ -110,13 +110,13 @@ public class main extends JFrame {
         lpa_mnMenu.add(mnMenuSep_1);
 
         lpa_mnSystemAdmin = new JMenu("System Administration");
-        adminIcon = new ImageIcon("ext-lib/adminIcon.png");
+        adminIcon = new ImageIcon(getClass().getResource("adminIcon.png"));
         lpa_mnSystemAdmin.setIcon(adminIcon);
         lpa_mnMenu.add(lpa_mnSystemAdmin);
 
         JMenuItem lpa_mntmUserMan = new JMenuItem("User Management");
         lpa_mntmUserMan.addActionListener(e -> ifUserManagement.setVisible(true));
-        usersIcon = new ImageIcon("ext-lib/usersIcon.png");
+        usersIcon = new ImageIcon(getClass().getResource("usersIcon.png"));
         lpa_mntmUserMan.setIcon(usersIcon);
         lpa_mnSystemAdmin.add(lpa_mntmUserMan);
 
@@ -124,13 +124,13 @@ public class main extends JFrame {
         lpa_mnMenu.add(mnMenuSep_2);
 
         JMenu mnExit = new JMenu("Exit");
-        exitIcon = new ImageIcon("ext-lib/exitIcon.png");
+        exitIcon = new ImageIcon(getClass().getResource("exitIcon.png"));
         mnExit.setIcon(exitIcon);
         lpa_mnMenu.add(mnExit);
 
         JMenuItem mntmLogout = new JMenuItem("Logout");
         mntmLogout.addActionListener(e -> do_logout());
-        ImageIcon logoutIcon = new ImageIcon("ext-lib/logoutIcon.png");
+        ImageIcon logoutIcon = new ImageIcon(getClass().getResource("logoutIcon.png"));
         mntmLogout.setIcon(logoutIcon);
 
         mnExit.add(mntmLogout);
@@ -140,7 +140,7 @@ public class main extends JFrame {
 
         JMenuItem mntmShutdown = new JMenuItem("Shutdown");
         mntmShutdown.addActionListener(e -> System.exit(0));
-        ImageIcon shutdownIcon = new ImageIcon("ext-lib/shutdownIcon.png");
+        ImageIcon shutdownIcon = new ImageIcon(getClass().getResource("shutdownIcon.png"));
         mntmShutdown.setIcon(shutdownIcon);
         mnExit.add(mntmShutdown);
 
@@ -149,7 +149,7 @@ public class main extends JFrame {
         lpa_menuBar.add(lpa_mnHelp);
 
         JMenuItem mntmHelpGuide = new JMenuItem("Help Guide");
-        helpIcon = new ImageIcon("ext-lib/helpIcon.png");
+        helpIcon = new ImageIcon(getClass().getResource("helpIcon.png"));
         mntmHelpGuide.setIcon(helpIcon);
         lpa_mnHelp.add(mntmHelpGuide);
         mntmHelpGuide.addActionListener(e -> {
@@ -158,7 +158,7 @@ public class main extends JFrame {
         });
 
         JMenuItem mntmAboutLpa = new JMenuItem("About LPA");
-        aboutIcon = new ImageIcon("ext-lib/aboutIcon.png");
+        aboutIcon = new ImageIcon(getClass().getResource("aboutIcon.png"));
         mntmAboutLpa.setIcon(aboutIcon);
         lpa_mnHelp.add(mntmAboutLpa);
         mntmAboutLpa.addActionListener(e -> {
@@ -187,7 +187,9 @@ public class main extends JFrame {
         ifLogin.setVisible(false);
         ifLogin.getContentPane().setBackground(new Color(204, 204, 255));
         ifLogin.setBounds(117, 44, 390, 211);
-        keysIcon = new ImageIcon("ext-lib/iconKey.png");
+//        keysIcon = new ImageIcon(getClass().getResource("iconKey.png"));
+        keysIcon = new ImageIcon(getClass().getResource("salesIcon.png"));
+
         ifLogin.setFrameIcon(keysIcon);
         centerJIF(ifLogin, "screen");
         contentPane.add(ifLogin);
@@ -195,8 +197,8 @@ public class main extends JFrame {
 
         layeredPaneBG = new JLayeredPane();
         layeredPaneBG.setBounds(0, 0, 388, 178);
-        secIcon = new ImageIcon("ext-lib/securityIcon.png");
-        loginBGIcon = new ImageIcon("ext-lib/lpaUserLoginBG.png");
+        secIcon = new ImageIcon(getClass().getResource("securityIcon.png"));
+        loginBGIcon = new ImageIcon(getClass().getResource("lpaUserLoginBG.png"));
         ifLogin.getContentPane().add(layeredPaneBG);
         layeredPaneFG = new JLayeredPane();
         layeredPaneFG.setBounds(0, 0, 388, 178);
@@ -232,7 +234,7 @@ public class main extends JFrame {
         loginBGLabel.setBounds(0, 0, 378, 89);
         layeredPaneFG.add(loginBGLabel);
         loginBGLabel.setIcon(loginBGIcon);
-        searchIcon = new ImageIcon("ext-lib/searchIcon.png");
+        searchIcon = new ImageIcon(getClass().getResource("searchIcon.png"));
 
         String[] columnNames = {
                 "Stock ID",

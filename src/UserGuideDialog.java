@@ -32,13 +32,13 @@ public class UserGuideDialog extends JDialog {
 //        contentPane.add(loginIcon);
 
         JLabel help1 = new JLabel();
-        help1.setIcon(new ImageIcon("images/Help Guide-1.png"));
+        help1.setIcon(new ImageIcon(getClass().getResource("Help Guide-1.png")));
 
         JLabel help2 = new JLabel();
-        help2.setIcon(new ImageIcon("images/Help Guide-2.png"));
+        help2.setIcon(new ImageIcon(getClass().getResource("Help Guide-2.png")));
 
         JLabel help3 = new JLabel();
-        help3.setIcon(new ImageIcon("images/Help Guide-3.png"));
+        help3.setIcon(new ImageIcon(getClass().getResource("Help Guide-3.png")));
 
 //        JLabel help4 = new JLabel();
 //        help4.setIcon(new ImageIcon("images/Help Guide-4.png"));

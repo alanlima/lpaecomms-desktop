@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 public class InvoicesFrame extends JInternalFrame
 implements ActionListener{
 
-    final ImageIcon searchIcon = new ImageIcon("ext-lib/searchIcon.png");
+    final ImageIcon searchIcon = new ImageIcon(getClass().getResource("searchIcon.png"));
     JTable tblInvoices;
     private final ConnectionManager connManager = ConnectionManager.instance();
     JTextField txtSearch;

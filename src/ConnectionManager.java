@@ -17,10 +17,15 @@ public class ConnectionManager {
     /**
      * Declaring constants variables
      * */
+//    private static final String MySQL_DB = "LPA_eComms";
+//    private static final String user      = "lpaecomms";
+//    private static final String pass      = "lpaecomms";
+//    private static final String url       = "jdbc:mysql://phpmyadmin.app/" + MySQL_DB;
+
     private static final String MySQL_DB = "LPA_eComms";
     private static final String user      = "lpaecomms";
     private static final String pass      = "lpaecomms";
-    private static final String url       = "jdbc:mysql://phpmyadmin.app/" + MySQL_DB;
+    private static final String url       = "jdbc:mysql://localhost/" + MySQL_DB;
 
     private Connection conn;
 
